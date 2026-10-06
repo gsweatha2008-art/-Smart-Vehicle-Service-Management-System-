@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Smart Vehicle Service{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+  {% if current_user %}
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">SV</span> Smart Vehicle Service</a>
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      {% if user_role == 'admin' %}<a href="{{ url_for('customers') }}">Customers</a>{% endif %}
+      <a href="{{ url_for('vehicles') }}">Vehicles</a>
+      <a href="{{ url_for('bookings') }}">Bookings</a>
+      {% if user_role == 'customer' %}<a href="{{ url_for('book_service') }}">Book service</a>{% endif %}
+      {% if user_role == 'admin' %}
+      <a href="{{ url_for('mechanics') }}">Mechanics</a>
+      {% endif %}
+      <a href="{{ url_for('services') }}">Services</a>
+      {% if user_role == 'admin' %}<a href="{{ url_for('spare_parts') }}">Spare parts</a>{% endif %}
+      <a href="{{ url_for('payments') }}">Payments</a>
+      <a href="{{ url_for('service_history') }}">History</a>
+      {% if user_role == 'admin' %}<a href="{{ url_for('reports') }}">Reports</a>{% endif %}
+      <a class="logout-link" href="{{ url_for('logout') }}">Sign out</a>
+    </nav>
+  </header>
+  {% endif %}
+  <main class="{% if current_user %}page-shell{% else %}auth-shell{% endif %}">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <section class="flash-stack" aria-live="polite">
+        {% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}
+      </section>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">Smart Vehicle Service Management System <span>·</span> Flask + PostgreSQL</footer>
+</body>
+</html>

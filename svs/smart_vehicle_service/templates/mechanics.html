@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Mechanics | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">SERVICE CENTER</p><h1>Mechanics</h1><p class="muted">Manage the team and their current availability.</p></div></section>
+<section class="panel form-panel"><div class="panel-heading"><div><h2>Add a mechanic</h2><p class="muted">Create a mechanic profile.</p></div></div>
+<form method="post" class="form-grid" data-validate>
+  <label>Name<input name="mechanic_name" maxlength="100" required></label>
+  <label>Phone<input name="phone" type="tel" maxlength="20" required></label>
+  <label>Specialization<input name="specialization" maxlength="100" required></label>
+  <label>Availability<select name="availability"><option value="available">Available</option><option value="busy">Busy</option><option value="unavailable">Unavailable</option></select></label>
+  <div class="form-action"><button class="button button-primary" type="submit">Add mechanic</button></div>
+</form></section>
+<section class="panel"><div class="panel-heading"><div><h2>Mechanic roster</h2></div><span class="count-pill">{{ mechanics|length }} mechanics</span></div>
+{% if mechanics %}<div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Specialization</th><th>Availability</th><th>Update</th></tr></thead><tbody>
+{% for mechanic in mechanics %}<tr><td class="strong">{{ mechanic.mechanic_name }}</td><td>{{ mechanic.phone }}</td><td>{{ mechanic.specialization }}</td><td><span class="status status-{{ mechanic.availability }}">{{ mechanic.availability }}</span></td><td><form method="post" class="inline-form"><input type="hidden" name="action" value="availability"><input type="hidden" name="mechanic_id" value="{{ mechanic.mechanic_id }}"><select name="availability" aria-label="Availability">{% for state in ['available', 'busy', 'unavailable'] %}<option value="{{ state }}" {% if mechanic.availability == state %}selected{% endif %}>{{ state|title }}</option>{% endfor %}</select><button class="button button-small" type="submit">Save</button></form></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty-state"><span>⚙</span><p>No mechanics have been added.</p></div>{% endif %}</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Sign in | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <div class="auth-brand"><span class="brand-mark">SV</span><span>Smart Vehicle Service</span></div>
+  <p class="eyebrow">WELCOME BACK</p>
+  <h1>Sign in to your account</h1>
+  <p class="muted">Manage bookings, vehicles and service records in one place.</p>
+  <form method="post" class="form-stack" data-validate>
+    <label>Account type
+      <select name="account_type" required>
+        <option value="customer">Customer</option>
+        <option value="admin">Administrator</option>
+      </select>
+    </label>
+    <label>Email or username
+      <input name="username" type="text" autocomplete="username" required>
+    </label>
+    <label>Password
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="button button-primary button-wide" type="submit">Sign in</button>
+  </form>
+  <p class="auth-switch">New customer? <a href="{{ url_for('register') }}">Create an account</a></p>
+</section>
+{% endblock %}

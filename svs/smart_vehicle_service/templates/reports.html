@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Reports | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">BUSINESS INSIGHTS</p><h1>Service reports</h1><p class="muted">Booking and paid-revenue summary by service type.</p></div></section>
+<section class="stat-grid">
+  <article class="stat-card"><span class="stat-icon">▤</span><span class="stat-label">All bookings</span><strong>{{ totals.get('booking_count', 0) }}</strong></article>
+  <article class="stat-card"><span class="stat-icon">✓</span><span class="stat-label">Completed</span><strong>{{ totals.get('completed_count', 0) }}</strong></article>
+  <article class="stat-card"><span class="stat-icon">$</span><span class="stat-label">Paid revenue</span><strong>${{ '%.2f'|format(totals.get('revenue', 0)) }}</strong></article>
+</section>
+<section class="panel"><div class="panel-heading"><div><h2>Service performance</h2><p class="muted">Revenue includes payments marked paid.</p></div></div>
+{% if summary %}<div class="table-wrap"><table><thead><tr><th>Service</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody>{% for row in summary %}<tr><td class="strong">{{ row.service_name }}</td><td>{{ row.booking_count }}</td><td>${{ '%.2f'|format(row.revenue) }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><p>No report data is available.</p></div>{% endif %}
+</section>
+{% endblock %}

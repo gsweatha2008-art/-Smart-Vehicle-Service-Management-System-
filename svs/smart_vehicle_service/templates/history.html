@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Service history | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">MAINTENANCE RECORDS</p><h1>Service history</h1><p class="muted">Completed or cancelled service records{% if user_role == 'customer' %} for your vehicles{% endif %}.</p></div></section>
+<section class="panel">
+{% if history %}<div class="table-wrap"><table><thead><tr><th>Vehicle</th>{% if user_role == 'admin' %}<th>Customer</th>{% endif %}<th>Service performed</th><th>Service date</th><th>Mechanic</th><th>Cost</th><th>Status</th></tr></thead><tbody>
+{% for item in history %}<tr><td class="strong">{{ item.vehicle_number }}</td>{% if user_role == 'admin' %}<td>{{ item.customer_name }}</td>{% endif %}<td>{{ item.service_performed }}</td><td>{{ item.service_date }}</td><td>{{ item.mechanic_name or 'Unassigned' }}</td><td>${{ '%.2f'|format(item.cost) }}</td><td><span class="status status-{{ item.status }}">{{ item.status }}</span></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty-state"><span>◷</span><p>No service history yet.</p><p class="muted">Records are added when a booking is marked completed or cancelled.</p></div>{% endif %}
+</section>
+{% endblock %}

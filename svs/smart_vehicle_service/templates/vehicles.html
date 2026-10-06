@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Vehicles | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">GARAGE</p><h1>Vehicles</h1><p class="muted">{% if user_role == 'admin' %}Customer vehicles registered for service.{% else %}Manage the vehicles linked to your account.{% endif %}</p></div></section>
+{% if user_role == 'customer' %}
+<section class="panel form-panel"><div class="panel-heading"><div><h2>Add a vehicle</h2><p class="muted">Enter the vehicle details below.</p></div></div>
+  <form method="post" class="form-grid" data-validate>
+    <label>Vehicle number<input name="vehicle_number" maxlength="20" placeholder="ABC-1234" required></label>
+    <label>Vehicle type<select name="vehicle_type" required><option value="">Select type</option><option>Car</option><option>Motorcycle</option><option>Van</option><option>Truck</option><option>Other</option></select></label>
+    <label>Brand<input name="brand" maxlength="60" required></label>
+    <label>Model<input name="model" maxlength="60" required></label>
+    <label>Manufacturing year<input name="manufacturing_year" type="number" min="1886" max="2100" required></label>
+    <div class="form-action"><button class="button button-primary" type="submit">Add vehicle</button></div>
+  </form>
+</section>
+{% endif %}
+<section class="panel">
+  <div class="panel-heading"><div><h2>{% if user_role == 'admin' %}Registered vehicles{% else %}My vehicles{% endif %}</h2></div><span class="count-pill">{{ vehicles|length }} vehicles</span></div>
+  {% if vehicles %}<div class="table-wrap"><table><thead><tr><th>Vehicle number</th>{% if user_role == 'admin' %}<th>Customer</th>{% endif %}<th>Type</th><th>Brand / model</th><th>Year</th></tr></thead><tbody>
+  {% for vehicle in vehicles %}<tr><td class="strong">{{ vehicle.vehicle_number }}</td>{% if user_role == 'admin' %}<td>{{ vehicle.customer_name }}</td>{% endif %}<td>{{ vehicle.vehicle_type }}</td><td>{{ vehicle.brand }} {{ vehicle.model }}</td><td>{{ vehicle.manufacturing_year }}</td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<div class="empty-state"><span>▣</span><p>No vehicles found.</p></div>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Payments | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">BILLING</p><h1>Payments</h1><p class="muted">{% if user_role == 'admin' %}Record and review customer payments.{% else %}Record a payment or review your payment history.{% endif %}</p></div></section>
+<section class="panel form-panel"><div class="panel-heading"><div><h2>Record a payment</h2><p class="muted">Payment is recorded against the selected booking.</p></div></div>
+{% if bookings %}<form method="post" class="form-grid" data-validate>
+  <label>Booking<select name="booking_id" required><option value="">Select a booking</option>{% for booking in bookings %}<option value="{{ booking.booking_id }}">#{{ booking.booking_id }} · {% if user_role == 'admin' %}{{ booking.full_name }} · {% endif %}{{ booking.vehicle_number }} · ${{ '%.2f'|format(booking.service_cost) }}</option>{% endfor %}</select></label>
+  <label>Amount ($)<input name="amount" type="number" min="0.01" step="0.01" required></label>
+  <label>Payment method<select name="payment_method" required><option value="">Select method</option><option value="cash">Cash</option><option value="card">Card</option><option value="upi">UPI</option><option value="bank_transfer">Bank transfer</option></select></label>
+  <div class="form-action"><button class="button button-primary" type="submit">Record payment</button></div>
+</form>{% else %}<div class="empty-state"><p>No bookings are available for payment.</p></div>{% endif %}
+</section>
+<section class="panel"><div class="panel-heading"><div><h2>Payment history</h2></div></div>
+{% if payments %}<div class="table-wrap"><table><thead><tr><th>Payment #</th><th>Booking</th>{% if user_role == 'admin' %}<th>Customer</th>{% endif %}<th>Vehicle</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead><tbody>
+{% for payment in payments %}<tr><td>{{ payment.payment_id }}</td><td>#{{ payment.booking_id }}</td>{% if user_role == 'admin' %}<td>{{ payment.full_name }}</td>{% endif %}<td>{{ payment.vehicle_number }}</td><td>${{ '%.2f'|format(payment.amount) }}</td><td>{{ payment.payment_method|replace('_', ' ')|title }}</td><td>{{ payment.payment_date }}</td><td><span class="status status-{{ payment.payment_status }}">{{ payment.payment_status }}</span></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty-state"><span>$</span><p>No payments have been recorded.</p></div>{% endif %}</section>
+{% endblock %}

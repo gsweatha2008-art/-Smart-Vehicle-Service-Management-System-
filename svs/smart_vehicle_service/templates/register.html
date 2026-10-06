@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Register | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <div class="auth-brand"><span class="brand-mark">SV</span><span>Smart Vehicle Service</span></div>
+  <p class="eyebrow">CUSTOMER REGISTRATION</p>
+  <h1>Create your account</h1>
+  <p class="muted">Register to add vehicles and book service appointments.</p>
+  <form method="post" class="form-stack" data-validate>
+    <label>Full name
+      <input name="full_name" maxlength="100" autocomplete="name" required>
+    </label>
+    <label>Email
+      <input name="email" type="email" maxlength="150" autocomplete="email" required>
+    </label>
+    <label>Phone
+      <input name="phone" type="tel" maxlength="20" autocomplete="tel" required>
+    </label>
+    <label>Password <span class="label-hint">At least 8 characters</span>
+      <input name="password" type="password" minlength="8" autocomplete="new-password" required>
+    </label>
+    <label>Confirm password
+      <input name="confirm_password" type="password" minlength="8" autocomplete="new-password" required data-match="password">
+    </label>
+    <button class="button button-primary button-wide" type="submit">Create account</button>
+  </form>
+  <p class="auth-switch">Already registered? <a href="{{ url_for('login') }}">Sign in</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Services | Smart Vehicle Service{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">SERVICE CATALOG</p><h1>Services</h1><p class="muted">Available maintenance and repair options.</p></div></section>
+{% if user_role == 'admin' %}<section class="panel form-panel"><div class="panel-heading"><div><h2>Add a service</h2></div></div>
+<form method="post" class="form-grid" data-validate>
+  <label>Service name<input name="service_name" maxlength="100" required></label>
+  <label>Cost ($)<input name="service_cost" type="number" min="0" step="0.01" required></label>
+  <label class="field-wide">Description<textarea name="description" maxlength="500" rows="2" required></textarea></label>
+  <div class="form-action"><button class="button button-primary" type="submit">Add service</button></div>
+</form></section>{% endif %}
+<section class="service-grid">{% for service in services %}<article class="service-card"><span class="service-icon">✳</span><h2>{{ service.service_name }}</h2><p>{{ service.description }}</p><strong>${{ '%.2f'|format(service.service_cost) }}</strong></article>{% else %}<div class="empty-state"><p>No services are available.</p></div>{% endfor %}</section>
+{% endblock %}
